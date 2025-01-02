@@ -41,6 +41,11 @@ def form():
             follow_up_message=form.follow_up_message.data,
             notes=form.notes.data,
         )
+        # Add the new data to the database
+        db.session.add(application)
+        db.session.commit()
+        # Redirect to the dashboard
+
         return redirect(url_for('dashboard'))
     return render_template('form.html', form=form)
 

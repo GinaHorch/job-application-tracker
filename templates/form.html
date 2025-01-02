@@ -8,23 +8,58 @@
     <div class="card-body">
         <h2 class="card-title">Enter Your Job Application Data</h2>
         <form method="POST">
+            {{ form.hidden_tag() }}
             <div class="form-group">
-                <!-- date label goes here -->
-                <!-- date input goes here -->
+                {{ form.date_submitted.label }}
+                {{ form.date_submitted(class="form-control") }}
             </div>
             <div class="form-group">
-                <!-- exercise label goes here -->
-                <!-- exercise input goes here -->
+                {{ form.due_date.label }}
+                {{ form.due_date(class="form-control") }}
             </div>
             <div class="form-group">
-                <!-- meditation label goes here -->
-                <!-- meditation input goes here -->
+                {{ form.follow_up_date.label }}
+                {{ form.follow_up_date(class="form-control") }}
             </div>
             <div class="form-group">
-                <!-- sleep label goes here -->
-                <!-- sleep input goes here -->
+                {{ form.company.label }}
+                {{ form.company(class="form-control") }}
             </div>
-            <!-- submit button goes here -->
+            <div class="form-group">
+                {{ form.contact.label }}
+                {{ form.contact(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.position_title.label }}
+                {{ form.position_title(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.status.label }}
+                {{ form.status(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.cv_submitted.label }}
+                {{ form.cv_submitted(class="form-check-input") }}
+            </div>
+            <div class="form-group">
+                {{ form.cover_letter_submitted.label }}
+                {{ form.cover_letter_submitted(class="form-check-input") }}
+            </div>
+            <div class="form-group">
+                {{ form.follow_up_sent.label }}
+                {{ form.follow_up_sent(class="form-check-input") }}
+            </div>
+            <div class="form-group">
+                {{ form.follow_up_message.label }}
+                {{ form.follow_up_message(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.notes.label }}
+                {{ form.notes(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.submit(class="btn btn-primary") }}
+            </div>
         </form>
     </div>
 </div>
