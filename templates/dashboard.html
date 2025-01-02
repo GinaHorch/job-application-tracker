@@ -4,35 +4,62 @@
 
 {% block content %}
 
-<h2 class="mb-4">Your Job Application Dashboard</h2>
-<div id="charts" class="row">
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Progress Data</h5>
-                <!-- Chart for exercise data -->
-                <p>Progress of job application data visualisation will be here.</p>
-            </div>
+<h2 class="mb-4">Job Applications Overview</h2>
+
+<!-- Filters -->
+<form method="GET" action="{{ url_for('dashboard') }}">
+    <div class="form-row">
+        <div class="col-md-3">
+            <select name="status" class="form-control">
+                <option value="">All Statuses</option>
+                <option value="Applied">Applied</option>
+                <option value="Interview Scheduled">Interview Scheduled</option>
+                <option value="Offer Received">Offer Received</option>
+                <option value="Rejected">Rejected</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <input type="text" name="company" placeholder="Filter by Company" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <input type="date" name="due_before" class="form-control" placeholder="Due Before">
+        </div>
+        <div class="col-md-3">
+            <button type="submit" class="btn btn-primary">Apply Filters</button>
         </div>
     </div>
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Action Required Data</h5>
-                <!-- Chart for meditation data -->
-                <p>Prioritisation of outstanding actions will be here.</p>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-4 mb-4">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">Overview</h5>
-                <!-- Chart for sleep data -->
-                <p>Overview of all job applications will be here. You can filter according to your needs.</p>
-            </div>
-        </div>
-    </div>
-</div>
+</form>
+
+<!-- Table -->
+<table class="table table-bordered mt-4">
+    <thead>
+        <tr>
+            <th>Date Submitted</th>
+            <th>Due Date</th>
+            <th>Follow-up Date</th>
+            <th>Company</th>
+            <th>Position Title</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for application in filtered_applications %}
+        <tr>
+            <td>{{ application.date_submitted.strftime('%d-%m-%Y') }}</td>
+            <td>{{ application.due_date.strftime('%d-%m-%Y') if application.due_date else 'N/A' }}</td>
+            <td>{{ application.follow_up_date.strftime('%d-%m-%Y') if application.follow_up_date else 'N/A' }}</td>
+            <td>{{ application.company }}</td>
+            <td>{{ application.position_title }}</td>
+            <td>{{ application.status }}</td>
+            <td>
+                <a href="#" class="btn btn-sm btn-info">View</a>
+                <a href="#" class="btn btn-sm btn-warning">Edit</a>
+                <a href="#" class="btn btn-sm btn-danger">Delete</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

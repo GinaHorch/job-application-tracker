@@ -1,5 +1,7 @@
-/* Custom Styles for Health Tracker Dashboard */
-
-main.container {
-    height: 560px
+/* Custom Styles for Job Application Tracker Dashboard */
+.table-danger {
+    background-color: #f8d7da !important;
+}
+.table-success {
+    background-color: #d4edda !important;
 }
