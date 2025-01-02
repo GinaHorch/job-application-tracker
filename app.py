@@ -3,19 +3,21 @@ from datetime import datetime, timedelta
 from models import JobApplication, db
 from forms import JobApplicationForm
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 import os
 
 app = Flask(__name__)
 
 app.config['SECRET_KEY'] = 'your_secret_key_here'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///job_application_data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+migrate = Migrate(app, db)
 
-@app.before_first_request
 def create_tables():
-    db.create_all()
+    with app.app_context():
+        db.create_all()
 
 @app.route('/')
 def index():
@@ -71,4 +73,5 @@ def dashboard():
     
 
 if __name__ == '__main__':
+    create_tables()
     app.run(debug=True)
