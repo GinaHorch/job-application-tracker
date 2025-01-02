@@ -25,3 +25,11 @@ dist-ssr
 
 .env
 .notes
+
+# Ignore Python virtual environments
+venv/
+ENV/
+
+# Ignore Python cache files
+*.pyc
+__pycache__/
