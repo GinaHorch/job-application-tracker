@@ -6,7 +6,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 import os
-from forms import JobApplicationForm, LoginForm
+from forms import JobApplicationForm, LoginForm, SignupForm
 from models import JobApplication, User
 from extensions import db
 
@@ -31,6 +31,19 @@ def load_user(user_id):
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    form = SignupForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Thanks for signing up! Please log in.', 'success')
+        login_user(user)
+        return redirect(url_for('dashboard'))
+    return render_template('signup.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():

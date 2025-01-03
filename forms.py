@@ -1,9 +1,30 @@
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, SubmitField, DateField, SelectField, TextAreaField, RadioField, PasswordField, BooleanField
-from wtforms.validators import DataRequired, Optional
+from wtforms.validators import DataRequired, Optional, EqualTo, ValidationError
+from models import User
 
 csrf = CSRFProtect()
+
+class SignupForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    email = StringField('Email', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password', validators=[
+        DataRequired(),
+        EqualTo('password', message="Passwords must match.")
+    ])
+    submit = SubmitField('Sign Up')
+
+    def validate_username(self, username):
+        user = User.query.filter_by(username=username.data).first()
+        if user:
+            raise ValidationError('That username is taken. Please choose a different one.')
+        
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user:
+            raise ValidationError('That email is taken. Please choose a different one.')
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
