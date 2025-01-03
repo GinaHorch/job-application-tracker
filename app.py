@@ -97,8 +97,9 @@ def form():
         db.session.commit()
         flash('Job application submitted successfully!', 'success')
         # Redirect to the dashboard
-
         return redirect(url_for('dashboard'))
+    else:
+        flash('Form validation failed. Please check your inputs.', 'danger')
     return render_template('form.html', form=form)
 
 @app.route('/dashboard')

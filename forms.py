@@ -47,11 +47,23 @@ class JobApplicationForm(FlaskForm):
         ('Rejected', 'Rejected'),
     ], validators=[DataRequired()])
 
-    cv_submitted = SelectField('CV Submitted', choices=[('yes', 'Yes'), ('no', 'No'), ('n/a', 'N/A')], validators=[DataRequired()])
+    cv_submitted = SelectField('CV Submitted', choices=[
+        ('yes', 'Yes'), 
+        ('no', 'No'), 
+        ('n/a', 'N/A')
+    ], validators=[DataRequired()])
 
-    cover_letter_submitted = SelectField('Cover Letter Submitted', choices=[('yes', 'Yes'), ('no', 'No'), ('n/a', 'N/A')], validators=[DataRequired()])
+    cover_letter_submitted = SelectField('Cover Letter Submitted', choices=[
+        ('yes', 'Yes'), 
+        ('no', 'No'), 
+        ('n/a', 'N/A')
+    ], validators=[DataRequired()])
 
-    follow_up_sent = SelectField('Follow-up Message Sent', choices=[('yes', 'Yes'), ('no', 'No'), ('n/a', 'N/A')], validators=[DataRequired()])
+    follow_up_sent = SelectField('Follow-up Message Sent', choices=[
+        ('yes', 'Yes'), 
+        ('no', 'No'), 
+        ('n/a', 'N/A')
+    ], validators=[DataRequired()])
 
     follow_up_message = TextAreaField('Follow-up Message (Optional)', validators=[Optional()])
 

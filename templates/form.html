@@ -39,30 +39,18 @@
             </div>
 
             <div class="form-group">
-                <label for="cv_submitted">CV Submitted</label>
-                <select class="form-control" id="cv_submitted" name="cv_submitted">
-                    <option value="yes">No</option>
-                    <option value="no">Yes</option>
-                    <option value="n/a">N/A</option>
-                </select>
+                {{ form.cv_submitted.label }}
+                {{ form.cv_submitted(class="form-control") }}
             </div>
             
             <div class="form-group">
-                <label for="cover_letter_submitted">Cover Letter Submitted</label>
-                <select class="form-control" id="cover_letter_submitted" name="cover_letter_submitted">
-                    <option value="yes">No</option>
-                    <option value="no">Yes</option>
-                    <option value="n/a">N/A</option>
-                </select>
+                {{ form.cover_letter_submitted.label }}
+                {{ form.cover_letter_submitted(class="form-control") }}
             </div>
             
             <div class="form-group">
-                <label for="follow_up_sent">Follow-up Message Sent</label>
-                <select class="form-control" id="follow_up_sent" name="follow_up_sent">
-                    <option value="yes">No</option>
-                    <option value="no">Yes</option>
-                    <option value="n/a">N/A</option>
-                </select>
+                {{ form.follow_up_sent.label }}
+                {{ form.follow_up_sent(class="form-control") }}
             </div>
             
             <div class="form-group">
