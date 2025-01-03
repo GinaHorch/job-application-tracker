@@ -18,21 +18,19 @@
     padding: 8px;
     border: 1px solid #ccc;
     border-radius: 4px;
+    background-color: #fff;
+    font-size: 1.2rem;
+}
+.nav-item.ml-auto {
+    margin-left: auto;
 }
 
-/* Radio Button Styling */
-.radio-group {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 5px;
-}
-
-.radio-option {
+.nav-item a {
     display: flex;
     align-items: center;
 }
 
-.radio-option input[type="radio"] {
+.nav-item i {
     margin-right: 5px;
 }
 

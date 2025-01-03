@@ -37,40 +37,34 @@
                 {{ form.status.label }}
                 {{ form.status(class="form-control") }}
             </div>
+
             <div class="form-group">
-                {{ form.cv_submitted.label }}
-                    <div class="radio-group">
-                        {% for option in form.cv_submitted %}
-                            <div class="radio-option">
-                                {{ option(class="form-check-input") }}
-                                {{ option.label(class="form-check-label") }}
-                            </div>
-                        {% endfor %}
-                    </div>
-                </div>
+                <label for="cv_submitted">CV Submitted</label>
+                <select class="form-control" id="cv_submitted" name="cv_submitted">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="n/a">N/A</option>
+                </select>
             </div>
+            
             <div class="form-group">
-                {{ form.cover_letter_submitted.label }}
-                    <div class="radio-group">
-                        {% for option in form.cover_letter_submitted %}
-                        <div class="radio-option">
-                            {{ option(class="form-check-input") }}
-                            {{ option.label(class="form-check-label") }}
-                        </div>
-                    {% endfor %}
-                    </div>
-                </div>
-            <div class="form-group">
-                {{ form.follow_up_sent.label }}
-                    <div class="radio-group">
-                        {% for option in form.follow_up_sent %}
-                        <div class="radio-option">
-                            {{ option(class="form-check-input") }}
-                            {{ option.label(class="form-check-label") }}
-                        </div>
-                    {% endfor %}
-                </div>
+                <label for="cover_letter_submitted">Cover Letter Submitted</label>
+                <select class="form-control" id="cover_letter_submitted" name="cover_letter_submitted">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="n/a">N/A</option>
+                </select>
             </div>
+            
+            <div class="form-group">
+                <label for="follow_up_sent">Follow-up Message Sent</label>
+                <select class="form-control" id="follow_up_sent" name="follow_up_sent">
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                    <option value="n/a">N/A</option>
+                </select>
+            </div>
+            
             <div class="form-group">
                 {{ form.follow_up_message.label }}
                 {{ form.follow_up_message(class="form-control") }}
@@ -79,7 +73,7 @@
                 {{ form.notes.label }}
                 {{ form.notes(class="form-control") }}
             </div>
-            <div class="form-group">
+            <div class="form-group text-center">
                 {{ form.submit(class="btn btn-primary") }}
             </div>
         </form>
