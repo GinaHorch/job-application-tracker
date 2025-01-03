@@ -13,18 +13,15 @@
         <h1>Job Application Tracker Dashboard</h1>
         <nav>
             <ul class="nav justify-content-center">
-                <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('index') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('form') }}">Enter Job Application Data</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('form') }}">Enter Job Application Data</a></li>
+                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('dashboard') }}">Dashboard</a></li>
                 {% if current_user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('logout') }}">Logout</a></li>
+                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
-                <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('signup') }}">Sign Up</a></li>
-                <li class="nav-item"><a class="nav-link text-white" href="{{ url_for('login') }}">Login</a></li>
+                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('signup') }}">Sign Up</a></li>
+                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('login') }}">Login</a></li>
                 {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">Home</a>
-                </li>
                 {% if current_user.is_authenticated %}
                     <li class="nav-item text-white">Welcome, {{ current_user.username }}</li>
                 {% endif %}

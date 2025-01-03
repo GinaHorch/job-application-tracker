@@ -57,6 +57,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
+            print(f"User {user.username} logged in.") 
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('dashboard'))
         flash('Invalid username or password', 'danger')
@@ -101,6 +102,7 @@ def form():
 @app.route('/dashboard')
 @login_required
 def dashboard():
+    print(f"User authenticated: {current_user.is_authenticated}")
     all_applications = JobApplication.query.all()
 
     filtered_applications = []
