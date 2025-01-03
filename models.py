@@ -16,7 +16,7 @@ class User(UserMixin, db.Model):
 
 class JobApplication(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date_submitted = db.Column(db.Date, nullable=False)
+    date_submitted = db.Column(db.Date, nullable=True)
     due_date = db.Column(db.Date, nullable=True)
     follow_up_date = db.Column(db.Date, nullable=True)
     company = db.Column(db.String(120), nullable=False)

@@ -76,7 +76,17 @@ def form():
     form = JobApplicationForm()
     if form.validate_on_submit():
         print("Form submitted successfully.")
-        print("Data:", request.form)
+        print("Data:", form.data)
+
+        def convert_date(date_field):
+            if date_field:
+                return datetime.strptime(date_field.strftime('%d-%m-%Y'), '%d-%m-%Y').date()
+            return None
+
+        date_submitted = convert_date(form.date_submitted.data)
+        due_date = convert_date(form.due_date.data) if form.due_date.data else None
+        follow_up_date = convert_date(form.follow_up_date.data) if form.follow_up_date.data else None
+
         application = JobApplication(
             date_submitted=form.date_submitted.data,
             due_date=form.due_date.data,
@@ -99,6 +109,8 @@ def form():
         # Redirect to the dashboard
         return redirect(url_for('dashboard'))
     else:
+        print("Form validation failed.")
+        print("Errors:", form.errors)
         flash('Form validation failed. Please check your inputs.', 'danger')
     return render_template('form.html', form=form)
 
