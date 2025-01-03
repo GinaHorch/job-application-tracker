@@ -1,6 +1,15 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, DateField, SelectField, TextAreaField, RadioField
+from flask_wtf.csrf import CSRFProtect
+from wtforms import StringField, SubmitField, DateField, SelectField, TextAreaField, RadioField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Optional
+
+csrf = CSRFProtect()
+
+class LoginForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    remember_me = BooleanField('Remember Me')
+    submit = SubmitField('Sign In')
 
 class JobApplicationForm(FlaskForm):
     date_submitted = DateField('Date Application Submitted', format='%d-%m-%Y', validators=[Optional()])

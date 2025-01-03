@@ -1,27 +1,56 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
+from flask_login import LoginManager, current_user, login_user, login_required, logout_user
+from flask_bcrypt import Bcrypt
 from datetime import datetime, timedelta
-from models import JobApplication, db
-from forms import JobApplicationForm
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from dotenv import load_dotenv
 import os
+from forms import JobApplicationForm, LoginForm
+from models import JobApplication, User
+from extensions import db
 
 app = Flask(__name__)
+bycrypt = Bcrypt(app)
 
-app.config['SECRET_KEY'] = 'your_secret_key_here'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///job_application_data.db'
+load_dotenv()
+app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
 migrate = Migrate(app, db)
 
-def create_tables():
-    with app.app_context():
-        db.create_all()
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user)
+            return redirect(url_for('dashboard'))
+        flash('Invalid username or password', 'danger')
+    return render_template('login.html', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('You have been logged out.', 'info')
+    return redirect(url_for('index'))
 
 @app.route('/form', methods=['GET','POST'])
 def form():
@@ -40,16 +69,19 @@ def form():
             follow_up_sent=form.follow_up_sent.data,
             follow_up_message=form.follow_up_message.data,
             notes=form.notes.data,
+            user_id=current_user.id
         )
         # Add the new data to the database
         db.session.add(application)
         db.session.commit()
+        flash('Job application submitted successfully!', 'success')
         # Redirect to the dashboard
 
         return redirect(url_for('dashboard'))
     return render_template('form.html', form=form)
 
 @app.route('/dashboard')
+@login_required
 def dashboard():
     all_applications = JobApplication.query.all()
 
@@ -75,8 +107,6 @@ def dashboard():
             app.priority = 'normal'
 
     return render_template('dashboard.html', applications=filtered_applications or all_applications)
-    
 
 if __name__ == '__main__':
-    create_tables()
     app.run(debug=True)

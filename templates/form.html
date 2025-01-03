@@ -39,7 +39,6 @@
             </div>
             <div class="form-group">
                 {{ form.cv_submitted.label }}
-                {{ form.cv_submitted(class="form-check-input") }}
                     <div class="radio-group">
                         {% for option in form.cv_submitted %}
                             <div class="radio-option">
@@ -48,17 +47,10 @@
                             </div>
                         {% endfor %}
                     </div>
-                {% else %}
-                    {{ form.cv_submitted(class="form-control") }}
-                {% endif %}
-            </div>
-            {% endfor %}
-            <div class="form-group">
-                {{ form.submit(class="btn btn-primary") }}
+                </div>
             </div>
             <div class="form-group">
                 {{ form.cover_letter_submitted.label }}
-                {{ form.cover_letter_submitted(class="form-check-input") }}
                     <div class="radio-group">
                         {% for option in form.cover_letter_submitted %}
                         <div class="radio-option">
@@ -67,17 +59,9 @@
                         </div>
                     {% endfor %}
                     </div>
-                    {% else %}
-                    {{ form.cover_letter_submitted(class="form-control") }}
-                {% endif %}
-            </div>
-            {% endfor %}
-            <div class="form-group">
-                {{ form.submit(class="btn btn-primary") }}
-            </div>
+                </div>
             <div class="form-group">
                 {{ form.follow_up_sent.label }}
-                {{ form.follow_up_sent(class="form-check-input") }}
                     <div class="radio-group">
                         {% for option in form.follow_up_sent %}
                         <div class="radio-option">
@@ -85,10 +69,7 @@
                             {{ option.label(class="form-check-label") }}
                         </div>
                     {% endfor %}
-                    </div>
-                    {% else %}
-                    {{ form.follow_up_sent(class="form-control") }}
-                {% endif %}
+                </div>
             </div>
             <div class="form-group">
                 {{ form.follow_up_message.label }}
