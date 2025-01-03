@@ -34,6 +34,8 @@ def index():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        return redirect(url_for('dashboard'))
     form = SignupForm()
     if form.validate_on_submit():
         user = User(username=form.username.data, email=form.email.data)
@@ -54,7 +56,8 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user and user.check_password(form.password.data):
             login_user(user)
-            return redirect(url_for('dashboard'))
+            next_page = request.args.get('next')
+            return redirect(next_page) if next_page else redirect(url_for('dashboard'))
         flash('Invalid username or password', 'danger')
     return render_template('login.html', form=form)
 
@@ -66,6 +69,7 @@ def logout():
     return redirect(url_for('index'))
 
 @app.route('/form', methods=['GET','POST'])
+@login_required
 def form():
     form = JobApplicationForm()
     if form.validate_on_submit():

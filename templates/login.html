@@ -17,6 +17,9 @@
                     <input type="password" class="form-control" id="password" name="password" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
+                {% if 'next' in request.args %}
+                <p class="text-danger">You must log in to access this page.</p>
+                {% endif %}
             </form>
         </div>
     </div>
