@@ -75,6 +75,8 @@ def logout():
 def form():
     form = JobApplicationForm()
     if form.validate_on_submit():
+        print("Form submitted successfully.")
+        print("Data:", request.form)
         application = JobApplication(
             date_submitted=form.date_submitted.data,
             due_date=form.due_date.data,
