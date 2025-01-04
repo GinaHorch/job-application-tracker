@@ -120,6 +120,16 @@ def dashboard():
 
     filtered_applications = []
     for application in all_applications:
+        today = datetime.utcnow().date()
+        application.row_class = ""
+
+        # Highlight when follow-up or due dates are today or overdue
+        if application.follow_up_date and application.follow_up_date <= today:
+            application.row_class = "table-warning"  # Bootstrap yellow
+        if application.due_date and application.due_date <= today:
+            application.row_class = "table-danger"  # Bootstrap red
+
+        # Filter applications based on query parameters
         if request.args.get('status') and request.args.get('status') != application.status:
             continue
         if request.args.get('company') and request.args.get('company').lower() not in application.company.lower():

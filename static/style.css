@@ -1,9 +1,11 @@
 /* Custom Styles for Job Application Tracker Dashboard */
 .table-danger {
     background-color: #f8d7da !important;
+    color: #721c24 !important;
 }
 .table-success {
     background-color: #d4edda !important;
+    color: #856404 !important;
 }
 
 /* Custom Styles for Job Application Tracker */
