@@ -9,6 +9,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from whitenoise import WhiteNoise
+from dotenv import load_dotenv
 import os
 from forms import JobApplicationForm, LoginForm, SignupForm
 from models import JobApplication, User
@@ -24,7 +25,7 @@ app.wsgi_app = WhiteNoise(app.wsgi_app, root="static/")
 app.wsgi_app.add_files("static/", prefix="static/")
 
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///data.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI', os.getenv('DATABASE_URL', 'sqlite:///default.db'))
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
