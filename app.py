@@ -56,6 +56,8 @@ def signup():
         flash('Thanks for signing up! Please log in.', 'success')
         login_user(user)
         return redirect(url_for('dashboard'))
+    elif request.method == 'GET':
+        form.username.data = request.args.get('username', '')
     return render_template('signup.html', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -79,6 +81,9 @@ def login():
                 return redirect(next_page) if next_page else redirect(url_for('dashboard'))
             else:
                 flash('Invalid username or password', 'danger')
+        else:
+            flash('No account found with that username. Would you like to sign up?', 'info')
+            return redirect(url_for('signup', username=form.username.data))
 
     return render_template('login.html', form=form)
 
