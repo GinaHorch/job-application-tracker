@@ -14,6 +14,8 @@ from forms import JobApplicationForm, LoginForm, SignupForm
 from models import JobApplication, User
 from extensions import db
 
+load_dotenv()
+
 app = Flask(__name__)
 bycrypt = Bcrypt(app)
 csrf = CSRFProtect(app)
@@ -21,7 +23,6 @@ csrf = CSRFProtect(app)
 app.wsgi_app = WhiteNoise(app.wsgi_app, root="static/")
 app.wsgi_app.add_files("static/", prefix="static/")
 
-load_dotenv()
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///data.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
