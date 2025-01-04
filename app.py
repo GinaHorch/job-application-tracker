@@ -61,16 +61,28 @@ def signup():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
+        print("User is already authenticated.")
         return redirect(url_for('dashboard'))
+    
     form = LoginForm()
     if form.validate_on_submit():
+        print(f"Login form submitted. Username: {form.username.data}")
         user = User.query.filter_by(username=form.username.data).first()
-        if user and user.check_password(form.password.data):
-            login_user(user)
-            print(f"User {user.username} logged in.") 
-            next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('dashboard'))
+
+        if user:
+            print(f"User found: {user.username}")
+            if user.check_password(form.password.data):
+                print("Password check passed.")
+                login_user(user)
+                flash('Welcome back, {}!'.format(user.username), 'success')
+                next_page = request.args.get('next')
+                return redirect(next_page) if next_page else redirect(url_for('dashboard'))
+            else:
+                print("Password check failed.")
+        else:
+            print("User not found.")
         flash('Invalid username or password', 'danger')
+
     return render_template('login.html', form=form)
 
 @app.route('/logout')
