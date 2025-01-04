@@ -161,12 +161,16 @@ def view_application(application_id):
 @login_required
 def edit_application(application_id):
     application = JobApplication.query.get_or_404(application_id)
+    print(f"Editing application: {application}") 
+
     if application.user_id != current_user.id:
-        flash("You are not authorized to edit this application.", "danger")
+        flash("You are not authorised to edit this application.", "danger")
         return redirect(url_for('dashboard'))
 
     form = JobApplicationForm(obj=application)
+
     if form.validate_on_submit():
+        print(f"Form data: {form.data}")
         application.date_submitted = form.date_submitted.data
         application.due_date = form.due_date.data
         application.follow_up_date = form.follow_up_date.data
@@ -182,8 +186,10 @@ def edit_application(application_id):
 
         db.session.commit()
         flash('Job application updated successfully!', 'success')
+        print(f"Updated application: {application}")
         return redirect(url_for('dashboard'))
-    return render_template('form.html', form=form)
+    
+    return render_template('edit_application.html', form=form)
 
 @app.route('/application/<int:application_id>/delete', methods=['POST'])
 @login_required

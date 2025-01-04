@@ -1,0 +1,11 @@
+<form method="POST" action="{{ url_for('edit_application', application_id=application.id) }}">
+    {{ form.hidden_tag() }}
+    <div class="form-group">
+        {{ form.date_submitted.label }}
+        {{ form.date_submitted(class="form-control") }}
+    </div>
+    <!-- Other fields... -->
+    <div class="form-group text-center">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
