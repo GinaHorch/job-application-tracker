@@ -33,9 +33,9 @@ class LoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class JobApplicationForm(FlaskForm):
-    date_submitted = DateField('Date Application Submitted', format='%d-%m-%Y', validators=[Optional()])
-    due_date = DateField('Application Closing Date', format='%d-%m-%Y', validators=[Optional()])
-    follow_up_date = DateField('Follow-up Reminder Date', format='%d-%m-%Y', validators=[Optional()])
+    date_submitted = DateField('Date Application Submitted', validators=[Optional()])
+    due_date = DateField('Application Closing Date', validators=[Optional()])
+    follow_up_date = DateField('Follow-up Reminder Date', validators=[Optional()])
     company = StringField('Company Name', validators=[DataRequired()])
     contact = StringField('Recruiter/Company Contact', validators=[DataRequired()])
     position_title = StringField('Job Title Applied for', validators=[DataRequired()])

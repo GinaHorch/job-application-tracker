@@ -78,15 +78,6 @@ def form():
         print("Form submitted successfully.")
         print("Data:", form.data)
 
-        def convert_date(date_field):
-            if date_field:
-                return datetime.strptime(date_field.strftime('%d-%m-%Y'), '%d-%m-%Y').date()
-            return None
-
-        date_submitted = convert_date(form.date_submitted.data)
-        due_date = convert_date(form.due_date.data) if form.due_date.data else None
-        follow_up_date = convert_date(form.follow_up_date.data) if form.follow_up_date.data else None
-
         application = JobApplication(
             date_submitted=form.date_submitted.data,
             due_date=form.due_date.data,
@@ -118,7 +109,7 @@ def form():
 @login_required
 def dashboard():
     print(f"User authenticated: {current_user.is_authenticated}")
-    all_applications = JobApplication.query.all()
+    all_applications = JobApplication.query.filter_by(user_id=current_user.id).all()
 
     filtered_applications = []
     for application in all_applications:

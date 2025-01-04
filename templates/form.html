@@ -89,26 +89,51 @@
             <div class="form-group">
                 {{ form.cv_submitted.label }}
                 {{ form.cv_submitted(class="form-control") }}
+                {% if form.cv_submitted.errors %}
+                <div class="text-danger">
+                    {{ form.cv_submitted.errors[0] }}
+                </div>
+            {% endif %}
             </div>
             
             <div class="form-group">
                 {{ form.cover_letter_submitted.label }}
                 {{ form.cover_letter_submitted(class="form-control") }}
+                {% if form.cover_letter_submitted.errors %}
+                <div class="text-danger">
+                    {{ form.cover_letter_submitted.errors[0] }}
+                </div>
+            {% endif %}
             </div>
             
             <div class="form-group">
                 {{ form.follow_up_sent.label }}
                 {{ form.follow_up_sent(class="form-control") }}
+                {% if form.follow_up_sent.errors %}
+                <div class="text-danger">
+                    {{ form.follow_up_sent.errors[0] }}
+                </div>
+            {% endif %}
             </div>
             
             <div class="form-group">
                 {{ form.follow_up_message.label }}
                 {{ form.follow_up_message(class="form-control") }}
+                {% if form.follow_up_message.errors %}
+                <div class="text-danger">
+                    {{ form.follow_up_message.errors[0] }}
+                </div>
+            {% endif %}
             </div>
 
             <div class="form-group">
                 {{ form.notes.label }}
                 {{ form.notes(class="form-control") }}
+                {% if form.notes.errors %}
+                <div class="text-danger">
+                    {{ form.notes.errors[0] }}
+                </div>
+            {% endif %}
             </div>
 
             <div class="form-group text-center">

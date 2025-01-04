@@ -6,6 +6,30 @@
 
 <h2 class="mb-4">Job Applications Overview</h2>
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="container">
+            {% for category, message in messages %}
+                {% if category == 'info' %}
+                    <div class="alert alert-{{ category }} mt-3" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if category == 'success' %}
+                    <div class="alert alert-success mt-3" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+                {% if category == 'danger' %}
+                    <div class="alert alert-danger mt-3" role="alert">
+                        {{ message }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
 <!-- Filters -->
 <form method="GET" action="{{ url_for('dashboard') }}">
     <div class="form-row">
@@ -44,9 +68,9 @@
         </tr>
     </thead>
     <tbody>
-        {% for application in filtered_applications %}
+        {% for application in applications %}
         <tr>
-            <td>{{ application.date_submitted.strftime('%d-%m-%Y') }}</td>
+            <td>{{ application.date_submitted.strftime('%d-%m-%Y') if application.date_submitted else 'N/A' }}</td>
             <td>{{ application.due_date.strftime('%d-%m-%Y') if application.due_date else 'N/A' }}</td>
             <td>{{ application.follow_up_date.strftime('%d-%m-%Y') if application.follow_up_date else 'N/A' }}</td>
             <td>{{ application.company }}</td>
