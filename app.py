@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from dotenv import load_dotenv
+from whitenoise import WhiteNoise
 import os
 from forms import JobApplicationForm, LoginForm, SignupForm
 from models import JobApplication, User
@@ -16,6 +17,9 @@ from extensions import db
 app = Flask(__name__)
 bycrypt = Bcrypt(app)
 csrf = CSRFProtect(app)
+
+app.wsgi_app = WhiteNoise(app.wsgi_app, root="static/")
+app.wsgi_app.add_files("static/", prefix="static/")
 
 load_dotenv()
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
