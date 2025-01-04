@@ -78,10 +78,7 @@ def login():
                 next_page = request.args.get('next')
                 return redirect(next_page) if next_page else redirect(url_for('dashboard'))
             else:
-                print("Password check failed.")
-        else:
-            print("User not found.")
-        flash('Invalid username or password', 'danger')
+                flash('Invalid username or password', 'danger')
 
     return render_template('login.html', form=form)
 
