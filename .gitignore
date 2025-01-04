@@ -33,3 +33,8 @@ ENV/
 # Ignore Python cache files
 *.pyc
 __pycache__/
+
+*.db
+*.sqlite
+*.sqlite3
+instance/
