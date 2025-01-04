@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, current_user, login_user, login_required, logout_user
 from flask_bcrypt import Bcrypt
+from flask_wtf.csrf import CSRFProtect
+from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, HiddenField
 from datetime import datetime, timedelta
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -12,6 +15,7 @@ from extensions import db
 
 app = Flask(__name__)
 bycrypt = Bcrypt(app)
+csrf = CSRFProtect(app)
 
 load_dotenv()
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
@@ -105,7 +109,10 @@ def form():
         flash('Form validation failed. Please check your inputs.', 'danger')
     return render_template('form.html', form=form)
 
-@app.route('/dashboard')
+class DeleteForm(FlaskForm):
+    csrf_token = HiddenField()
+
+@app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
 def dashboard():
     print(f"User authenticated: {current_user.is_authenticated}")
@@ -131,8 +138,66 @@ def dashboard():
             app.priority = 'completed'
         else:
             app.priority = 'normal'
+    
+    application_form = JobApplicationForm()
+    delete_form = DeleteForm()
 
-    return render_template('dashboard.html', applications=filtered_applications or all_applications)
+    return render_template(
+        'dashboard.html', 
+        applications=filtered_applications or all_applications,
+        application_form=application_form,
+        delete_form=delete_form)
+
+@app.route('/application/<int:application_id>', methods=['GET'])
+@login_required
+def view_application(application_id):
+    application = JobApplication.query.get_or_404(application_id)
+    if application.user_id != current_user.id:
+        flash("You are not authorized to view this application.", "danger")
+        return redirect(url_for('dashboard'))
+    return render_template('view_application.html', application=application)
+
+@app.route('/application/<int:application_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_application(application_id):
+    application = JobApplication.query.get_or_404(application_id)
+    if application.user_id != current_user.id:
+        flash("You are not authorized to edit this application.", "danger")
+        return redirect(url_for('dashboard'))
+
+    form = JobApplicationForm(obj=application)
+    if form.validate_on_submit():
+        application.date_submitted = form.date_submitted.data
+        application.due_date = form.due_date.data
+        application.follow_up_date = form.follow_up_date.data
+        application.company = form.company.data
+        application.contact = form.contact.data
+        application.position_title = form.position_title.data
+        application.status = form.status.data
+        application.cv_submitted = form.cv_submitted.data
+        application.cover_letter_submitted = form.cover_letter_submitted.data
+        application.follow_up_sent = form.follow_up_sent.data
+        application.follow_up_message = form.follow_up_message.data
+        application.notes = form.notes.data
+
+        db.session.commit()
+        flash('Job application updated successfully!', 'success')
+        return redirect(url_for('dashboard'))
+    return render_template('form.html', form=form)
+
+@app.route('/application/<int:application_id>/delete', methods=['POST'])
+@login_required
+def delete_application(application_id):
+    application = JobApplication.query.get_or_404(application_id)
+    if application.user_id != current_user.id:
+        flash("You are not authorized to delete this application.", "danger")
+        return redirect(url_for('dashboard'))
+
+    db.session.delete(application)
+    db.session.commit()
+    flash('Job application deleted successfully!', 'success')
+    return redirect(url_for('dashboard'))
+
 
 if __name__ == '__main__':
     app.run(debug=True)

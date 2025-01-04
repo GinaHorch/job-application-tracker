@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}View Application{% endblock %}
+
+{% block content %}
+<h2>Application Details</h2>
+<table class="table">
+    <tr>
+        <th>Date Submitted</th>
+        <td>{{ application.date_submitted.strftime('%d-%m-%Y') if application.date_submitted else 'N/A' }}</td>
+    </tr>
+    <tr>
+        <th>Due Date</th>
+        <td>{{ application.due_date.strftime('%d-%m-%Y') if application.due_date else 'N/A' }}</td>
+    </tr>
+    <tr>
+        <th>Follow-up Date</th>
+        <td>{{ application.follow_up_date.strftime('%d-%m-%Y') if application.follow_up_date else 'N/A' }}</td>
+    </tr>
+    <tr>
+        <th>Company</th>
+        <td>{{ application.company }}</td>
+    </tr>
+    <tr>
+        <th>Contact</th>
+        <td>{{ application.contact }}</td>
+    </tr>
+    <tr>
+        <th>Position Title</th>
+        <td>{{ application.position_title }}</td>
+    </tr>
+    <tr>
+        <th>Status</th>
+        <td>{{ application.status }}</td>
+    </tr>
+    <tr>
+        <th>CV Submitted</th>
+        <td>{{ application.cv_submitted }}</td>
+    </tr>
+    <tr>
+        <th>Cover Letter Submitted</th>
+        <td>{{ application.cover_letter_submitted }}</td>
+    </tr>
+    <tr>
+        <th>Follow-Up Sent</th>
+        <td>{{ application.follow_up_sent }}</td>
+    </tr>
+    <tr>
+        <th>Follow-Up Message</th>
+        <td>{{ application.follow_up_message }}</td>
+    </tr>
+    <tr>
+        <th>Notes</th>
+        <td>{{ application.notes }}</td>
+    </tr>
+</table>
+<a href="{{ url_for('dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+{% endblock %}

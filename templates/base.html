@@ -35,9 +35,7 @@
     </header>
     <main class="container">
         {% block content %}{% endblock %}
-
-
-
+        <script src="{{ url_for('static', filename='confirmation.js') }}"></script>
         
     </main>
     <footer class="bg-info text-white text-center py-3 mt-4">
