@@ -189,7 +189,7 @@ def edit_application(application_id):
         print(f"Updated application: {application}")
         return redirect(url_for('dashboard'))
     
-    return render_template('edit_application.html', form=form)
+    return render_template('edit_application.html', form=form, application=application)
 
 @app.route('/application/<int:application_id>/delete', methods=['POST'])
 @login_required

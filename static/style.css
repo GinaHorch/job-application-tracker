@@ -68,3 +68,32 @@
 .status-rejected {
     background-color: #f8d7da;
 }
+
+/* Ensure all buttons in the Actions column have a consistent size */
+.table .btn {
+    padding: 0.5rem 1rem; /* Increase padding for better touch targets */
+    font-size: 0.9rem;    /* Adjust font size for readability */
+    display: flex;        /* Align icon and text horizontally */
+    align-items: center;
+    gap: 0.5rem;          /* Add space between icon and text */
+}
+
+/* Add spacing between buttons */
+.table .btn-group .btn {
+    margin-right: 0.5rem; /* Space between buttons */
+}
+
+.table .btn-group .btn:last-child {
+    margin-right: 0; /* Remove margin for the last button */
+}
+
+/* Ensure the Delete button stands out */
+.table .btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.table .btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
