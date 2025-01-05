@@ -1,1 +1,13 @@
-Single-database configuration for Flask.
+# Job Application Tracker 📋
+
+A Job Application Tracker designed to help you organise and manage your job hunt effectively. This web application enables users to keep track of job applications, monitor deadlines, and follow up on opportunities, all in one convenient location.
+
+Whether you want to use the deployed version or customise the code for your own needs, this tracker is flexible, user-friendly, and built with a robust tech stack.
+
+# 🚀 Features
+
+- **User Authentication:** Secure signup and login functionality.
+- **Dashboard:** View all job applications with filter options by status, company, or due date.
+- **Job Details Management:** Add, edit, view, and delete job applications.
+- **Follow-Up Reminders:** Highlight applications with upcoming or overdue follow-up dates.
+Responsive Design: Optimized for both desktop and mobile devices.

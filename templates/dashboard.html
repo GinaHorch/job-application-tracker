@@ -55,50 +55,52 @@
 </form>
 
 <!-- Table -->
-<table class="table table-bordered mt-4">
-    <thead>
-        <tr>
-            <th>Date Submitted</th>
-            <th>Due Date</th>
-            <th>Follow-up Date</th>
-            <th>Company</th>
-            <th>Position Title</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for application in applications %}
-        <tr class="{{ application.row_class }}">
-            <td>{{ application.date_submitted.strftime('%d-%m-%Y') if application.date_submitted else 'N/A' }}</td>
-            <td>{{ application.due_date.strftime('%d-%m-%Y') if application.due_date else 'N/A' }}</td>
-            <td>{{ application.follow_up_date.strftime('%d-%m-%Y') if application.follow_up_date else 'N/A' }}</td>
-            <td>{{ application.company }}</td>
-            <td>{{ application.position_title }}</td>
-            <td>{{ application.status }}</td>
-            <td>
-                <div class="btn-group" role="group">
-                    <a href="{{ url_for('view_application', application_id=application.id) }}" 
-                       class="btn btn-info me-2">
-                        <i class="fas fa-eye"></i> View
-                    </a>
-                    <a href="{{ url_for('edit_application', application_id=application.id) }}" 
-                       class="btn btn-warning me-2">
-                        <i class="fas fa-edit"></i> Edit
-                    </a>
-                    <form method="POST" action="{{ url_for('delete_application', application_id=application.id) }}" 
-                          style="display: inline;">
-                        {{ delete_form.hidden_tag() }}
-                        <button type="submit" class="btn btn-danger">
-                            <i class="fas fa-trash-alt"></i> Delete
-                        </button>
-                    </form>
-                </div>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-bordered mt-4">
+        <thead>
+            <tr>
+                <th>Date Submitted</th>
+                <th>Due Date</th>
+                <th>Follow-up Date</th>
+                <th>Company</th>
+                <th>Position Title</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for application in applications %}
+            <tr class="{{ application.row_class }}">
+                <td>{{ application.date_submitted.strftime('%d-%m-%Y') if application.date_submitted else 'N/A' }}</td>
+                <td>{{ application.due_date.strftime('%d-%m-%Y') if application.due_date else 'N/A' }}</td>
+                <td>{{ application.follow_up_date.strftime('%d-%m-%Y') if application.follow_up_date else 'N/A' }}</td>
+                <td>{{ application.company }}</td>
+                <td>{{ application.position_title }}</td>
+                <td>{{ application.status }}</td>
+                <td>
+                    <div class="btn-group" role="group">
+                        <a href="{{ url_for('view_application', application_id=application.id) }}" 
+                            class="btn btn-info me-2">
+                                <i class="fas fa-eye"></i> View
+                        </a>
+                        <a href="{{ url_for('edit_application', application_id=application.id) }}" 
+                            class="btn btn-warning me-2">
+                                <i class="fas fa-edit"></i> Edit
+                        </a>
+                        <form method="POST" action="{{ url_for('delete_application', application_id=application.id) }}" 
+                                style="display: inline;">
+                            {{ delete_form.hidden_tag() }}
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 
 <div class="mt-3">
     <span class="badge bg-danger">Overdue</span> Due date is today or past.

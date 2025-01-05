@@ -99,3 +99,13 @@
     background-color: #c82333;
     border-color: #bd2130;
 }
+
+@media (max-width: 768px) {
+    .dashboard-table {
+        font-size: 0.9rem;
+    }
+    .table .btn {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.8rem;
+    }
+}
