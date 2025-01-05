@@ -46,7 +46,7 @@ class InterviewStageForm(FlaskForm):
             ('Leadership Team Interview', 'Leadership Team Interview'),
             ('Reference Checks', 'Reference Checks')
         ],
-        validators=[DataRequired()]
+        validators=[Optional()]
     )
     date = DateField('Date', validators=[Optional()])
     status = SelectField(
@@ -57,7 +57,7 @@ class InterviewStageForm(FlaskForm):
             ('Passed', 'Passed'),
             ('Failed', 'Failed')
         ],
-        validators=[DataRequired()]
+        validators=[Optional()]
     )
     notes = TextAreaField('Notes', validators=[Optional()])
     submit = SubmitField('Add Interview Stage')
@@ -67,15 +67,15 @@ class JobApplicationForm(FlaskForm):
     due_date = DateField('Application Closing Date', validators=[Optional()])
     follow_up_date = DateField('Follow-up Reminder Date', validators=[Optional()])
     company = StringField('Company Name', validators=[DataRequired()])
-    contact = StringField('Recruiter/Company Contact', validators=[DataRequired()])
-    position_title = StringField('Job Title Applied for', validators=[DataRequired()])
+    contact = StringField('Recruiter/Company Contact', validators=[Optional()])
+    position_title = StringField('Job Title Applied for', validators=[Optional()])
     status = SelectField('Application Status', choices=[
         ('Work in progress', 'Work in progress'),
         ('Applied', 'Applied'),
         ('Interview Scheduled', 'Interview Scheduled'),
         ('Offer Received', 'Offer Received'),
         ('Rejected', 'Rejected'),
-    ], validators=[DataRequired()])
+    ], validators=[Optional()])
 
     cv_submitted = SelectField('CV Submitted', choices=[
         ('yes', 'Yes'), 

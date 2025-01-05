@@ -210,21 +210,33 @@ def edit_application(application_id):
     if form.validate_on_submit():
         print(f"Form data: {form.data}")
         print("Form validated successfully")
-        form.populate_obj(application)  # This line replaces all individual field assignments
-        # application.date_submitted = form.date_submitted.data
-        # application.due_date = form.due_date.data
-        # application.follow_up_date = form.follow_up_date.data
-        # application.company = form.company.data
-        # application.contact = form.contact.data
-        # application.position_title = form.position_title.data
-        # application.status = form.status.data
-        # application.cv_submitted = form.cv_submitted.data
-        # application.cover_letter_submitted = form.cover_letter_submitted.data
-        # application.follow_up_sent = form.follow_up_sent.data
-        # application.follow_up_message = form.follow_up_message.data
-        # application.notes = form.notes.data
+
+         # Only update fields that the user modified
+        if form.date_submitted.data:
+            application.date_submitted = form.date_submitted.data
+        if form.due_date.data:
+            application.due_date = form.due_date.data
+        if form.follow_up_date.data:
+            application.follow_up_date = form.follow_up_date.data
+        if form.company.data:
+            application.company = form.company.data
+        if form.contact.data:
+            application.contact = form.contact.data
+        if form.position_title.data:
+            application.position_title = form.position_title.data
+        if form.status.data:
+            application.status = form.status.data
+        if form.cv_submitted.data is not None:  # Boolean fields require explicit checks
+            application.cv_submitted = form.cv_submitted.data
+        if form.cover_letter_submitted.data is not None:
+            application.cover_letter_submitted = form.cover_letter_submitted.data
+        if form.follow_up_sent.data is not None:
+            application.follow_up_sent = form.follow_up_sent.data
+        if form.follow_up_message.data:
+            application.follow_up_message = form.follow_up_message.data
+        if form.notes.data:
+            application.notes = form.notes.data
         
-        # Update interview stages
         new_interview_stages = []
         for stage_form in form.interview_stages.entries:
             if stage_form.data:  # Ensure valid data exists
@@ -247,6 +259,14 @@ def edit_application(application_id):
                         job_application_id=application.id
                     )
                     new_interview_stages.append(new_stage)
+                    
+        # Delete stages not in the updated list
+        existing_stage_ids = {stage.id for stage in application.interview_stages}
+        updated_stage_ids = {stage.id for stage in new_interview_stages if stage.id}
+
+        for stage_id in existing_stage_ids - updated_stage_ids:
+            stage_to_delete = InterviewStage.query.get(stage_id)
+            db.session.delete(stage_to_delete)
         
         application.interview_stages = new_interview_stages 
 
@@ -255,8 +275,9 @@ def edit_application(application_id):
         print(f"Updated application: {application}")
         return redirect(url_for('dashboard'))
     else:
-        print("Form validation failed.")
-        print("Errors:", form.errors)       
+        if form.errors:
+            print("Form validation failed.")
+            print("Errors:", form.errors)       
     
     return render_template('edit_application.html', form=form, application=application)
 
