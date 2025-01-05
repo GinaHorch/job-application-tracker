@@ -80,7 +80,7 @@ class InterviewStageForm(FlaskForm):
         ('Salary Conversation', 'Salary Conversation'),
         ('Leadership Team Interview', 'Leadership Team Interview'),
         ('Reference Checks', 'Reference Checks')
-    ]), validators=[DataRequired()]
+    ], validators=[DataRequired()])
 
     date = DateField('Date', validators=[Optional()])
     status = SelectField('Status', choices=[
@@ -88,7 +88,7 @@ class InterviewStageForm(FlaskForm):
         ('Completed', 'Completed'),
         ('Passed', 'Passed'),
         ('Failed', 'Failed')
-    ]), validators=[DataRequired()]
+    ], validators=[DataRequired()])
 
     notes = TextAreaField('Notes', validators=[Optional()])
     submit = SubmitField('Add Interview Stage')
