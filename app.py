@@ -250,7 +250,7 @@ def edit_application(application_id):
                         new_interview_stages.append(stage)
                 else:
                     # Add a new stage
-                    new_stage = InterviewStage(job_application_id=application.id)                   )
+                    new_stage = InterviewStage(job_application_id=application.id)
                     for field in ['stage_name', 'date', 'status', 'notes']:
                         if field in stage_form.data:
                             setattr(new_stage, field, stage_form.data[field])
