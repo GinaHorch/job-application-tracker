@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
 from wtforms import StringField, SubmitField, DateField, SelectField, TextAreaField, RadioField, PasswordField, BooleanField
 from wtforms.validators import DataRequired, Optional, EqualTo, ValidationError
-from models import User
+from models import User, JobApplication, InterviewStage
 
 csrf = CSRFProtect()
 
@@ -71,24 +71,30 @@ class JobApplicationForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class InterviewStageForm(FlaskForm):
-    stage_name = SelectField('Stage Name', choices=[
-        ('Initial Test', 'Initial Test'),
-        ('Initial Interview', 'Initial Interview'),
-        ('Technical Interview', 'Technical Interview'),
-        ('Work Sample', 'Work Sample'),
-        ('Personality Assessment', 'Personality Assessment'),
-        ('Salary Conversation', 'Salary Conversation'),
-        ('Leadership Team Interview', 'Leadership Team Interview'),
-        ('Reference Checks', 'Reference Checks')
-    ], validators=[DataRequired()])
-
+    stage_name = SelectField(
+        'Stage Name',
+        choices=[
+            ('Initial Test', 'Initial Test'),
+            ('Initial Interview', 'Initial Interview'),
+            ('Technical Interview', 'Technical Interview'),
+            ('Work Sample', 'Work Sample'),
+            ('Personality Assessment', 'Personality Assessment'),
+            ('Salary Conversation', 'Salary Conversation'),
+            ('Leadership Team Interview', 'Leadership Team Interview'),
+            ('Reference Checks', 'Reference Checks')
+        ],
+        validators=[DataRequired()]
+    )
     date = DateField('Date', validators=[Optional()])
-    status = SelectField('Status', choices=[
-        ('Scheduled', 'Scheduled'),
-        ('Completed', 'Completed'),
-        ('Passed', 'Passed'),
-        ('Failed', 'Failed')
-    ], validators=[DataRequired()])
-
+    status = SelectField(
+        'Status',
+        choices=[
+            ('Scheduled', 'Scheduled'),
+            ('Completed', 'Completed'),
+            ('Passed', 'Passed'),
+            ('Failed', 'Failed')
+        ],
+        validators=[DataRequired()]
+    )
     notes = TextAreaField('Notes', validators=[Optional()])
     submit = SubmitField('Add Interview Stage')
