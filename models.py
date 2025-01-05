@@ -27,6 +27,7 @@ class JobApplication(db.Model):
     cover_letter_submitted = db.Column(db.String(10), nullable=False)
     follow_up_sent = db.Column(db.String(10), nullable=False)
     follow_up_message = db.Column(db.Text, nullable=True)
+    interview_stages = db.relationship('InterviewStage', back_populates='job_application', cascade='all, delete-orphan')
     notes = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
@@ -34,3 +35,13 @@ class JobApplication(db.Model):
 
     def __repr__(self):
         return f"<JobApplication {self.id} - {self.company}>"
+
+class InterviewStage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    job_application_id = db.Column(db.Integer, db.ForeignKey('job_application.id'), nullable=False)
+    stage_name = db.Column(db.String(100), nullable=False)
+    date = db.Column(db.Date, nullable=True)
+    status = db.Column(db.String(50), nullable=False)
+    notes = db.Column(db.Text, nullable=True)
+
+    job_application = db.relationship('JobApplication', backref=db.backref('interview_stages', lazy=True))

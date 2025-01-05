@@ -11,8 +11,8 @@ from dotenv import load_dotenv
 from whitenoise import WhiteNoise
 from dotenv import load_dotenv
 import os
-from forms import JobApplicationForm, LoginForm, SignupForm
-from models import JobApplication, User
+from forms import JobApplicationForm, LoginForm, SignupForm, InterviewStageForm
+from models import JobApplication, User, InterviewStage
 from extensions import db
 
 load_dotenv()
@@ -129,7 +129,7 @@ def form():
         print("Form validation failed.")
         print("Errors:", form.errors)
         flash('Form validation failed. Please check your inputs.', 'danger')
-        
+
     return render_template('form.html', form=form)
 
 class DeleteForm(FlaskForm):
@@ -242,6 +242,45 @@ def delete_application(application_id):
     flash('Job application deleted successfully!', 'success')
     return redirect(url_for('dashboard'))
 
+@app.route('/application/<int:application_id>/add_interview', methods=['GET', 'POST'])
+@login_required
+def add_interview_stage(application_id):
+    form = InterviewStageForm()
+    application = JobApplication.query.get_or_404(application_id)
+    if form.validate_on_submit():
+        new_stage = InterviewStage(
+            job_application_id=application.id,
+            stage_name=form.stage_name.data,
+            date=form.date.data,
+            status=form.status.data,
+            notes=form.notes.data
+        )
+        db.session.add(new_stage)
+        db.session.commit()
+        flash('Interview stage added successfully.', 'success')
+        return redirect(url_for('view_application', application_id=application.id))
+    return render_template('add_interview_stage.html', form=form, application=application)
+
+@app.route('/interview_stage/<int:stage_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_interview_stage(stage_id):
+    stage = InterviewStage.query.get_or_404(stage_id)
+    form = InterviewStageForm(obj=stage)
+    if form.validate_on_submit():
+        form.populate_obj(stage)
+        db.session.commit()
+        flash('Interview stage updated successfully.', 'success')
+        return redirect(url_for('view_application', application_id=stage.job_application_id))
+    return render_template('edit_interview_stage.html', form=form, stage=stage)
+
+@app.route('/interview_stage/<int:stage_id>/delete', methods=['POST'])
+@login_required
+def delete_interview_stage(stage_id):
+    stage = InterviewStage.query.get_or_404(stage_id)
+    db.session.delete(stage)
+    db.session.commit()
+    flash('Interview stage deleted successfully.', 'success')
+    return redirect(url_for('view_application', application_id=stage.job_application_id))
 
 if __name__ == '__main__':
     app.run(debug=True)

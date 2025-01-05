@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Add Interview Stage{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Add Interview Stage for {{ application.company }} - {{ application.position_title }}</h2>
+    <form method="POST" action="{{ url_for('add_interview_stage', application_id=application.id) }}">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.stage_name.label }}
+            {{ form.stage_name(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.date.label }}
+            {{ form.date(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.status.label }}
+            {{ form.status(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.notes.label }}
+            {{ form.notes(class="form-control") }}
+        </div>
+        {{ form.submit(class="btn btn-primary mt-3") }}
+    </form>
+</div>
+{% endblock %}
