@@ -209,18 +209,20 @@ def edit_application(application_id):
 
     if form.validate_on_submit():
         print(f"Form data: {form.data}")
-        application.date_submitted = form.date_submitted.data
-        application.due_date = form.due_date.data
-        application.follow_up_date = form.follow_up_date.data
-        application.company = form.company.data
-        application.contact = form.contact.data
-        application.position_title = form.position_title.data
-        application.status = form.status.data
-        application.cv_submitted = form.cv_submitted.data
-        application.cover_letter_submitted = form.cover_letter_submitted.data
-        application.follow_up_sent = form.follow_up_sent.data
-        application.follow_up_message = form.follow_up_message.data
-        application.notes = form.notes.data
+        print("Form validated successfully")
+        form.populate_obj(application)  # This line replaces all individual field assignments
+        # application.date_submitted = form.date_submitted.data
+        # application.due_date = form.due_date.data
+        # application.follow_up_date = form.follow_up_date.data
+        # application.company = form.company.data
+        # application.contact = form.contact.data
+        # application.position_title = form.position_title.data
+        # application.status = form.status.data
+        # application.cv_submitted = form.cv_submitted.data
+        # application.cover_letter_submitted = form.cover_letter_submitted.data
+        # application.follow_up_sent = form.follow_up_sent.data
+        # application.follow_up_message = form.follow_up_message.data
+        # application.notes = form.notes.data
         
         # Update interview stages
         new_interview_stages = []
@@ -246,12 +248,15 @@ def edit_application(application_id):
                     )
                     new_interview_stages.append(new_stage)
         
-        application.interview_stages = new_interview_stages        
+        application.interview_stages = new_interview_stages 
 
         db.session.commit()
         flash('Job application updated successfully!', 'success')
         print(f"Updated application: {application}")
         return redirect(url_for('dashboard'))
+    else:
+        print("Form validation failed.")
+        print("Errors:", form.errors)       
     
     return render_template('edit_application.html', form=form, application=application)
 
