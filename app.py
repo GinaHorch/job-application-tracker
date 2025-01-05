@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, current_user, login_user, login_required, logout_user
 from flask_bcrypt import Bcrypt
 from flask_wtf.csrf import CSRFProtect
@@ -97,6 +97,7 @@ def logout():
 @app.route('/form', methods=['GET','POST'])
 @login_required
 def form():
+    print(f"User authenticated: {current_user.is_authenticated}")
     form = JobApplicationForm()
     if form.validate_on_submit():
         print("Form submitted successfully.")
@@ -123,10 +124,12 @@ def form():
         flash('Job application submitted successfully!', 'success')
         # Redirect to the dashboard
         return redirect(url_for('dashboard'))
-    else:
+    
+    if form.errors:
         print("Form validation failed.")
         print("Errors:", form.errors)
         flash('Form validation failed. Please check your inputs.', 'danger')
+        
     return render_template('form.html', form=form)
 
 class DeleteForm(FlaskForm):
@@ -172,11 +175,16 @@ def dashboard():
     application_form = JobApplicationForm()
     delete_form = DeleteForm()
 
-    return render_template(
+    rendered_template = render_template(
         'dashboard.html', 
         applications=filtered_applications or all_applications,
         application_form=application_form,
         delete_form=delete_form)
+    
+    # Clear flash messages after rendering
+    session.pop('_flashes', None)
+
+    return rendered_template
 
 @app.route('/application/<int:application_id>', methods=['GET'])
 @login_required
