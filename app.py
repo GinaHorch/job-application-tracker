@@ -239,7 +239,7 @@ def edit_application(application_id):
         
         new_interview_stages = []
         for stage_form in form.interview_stages.entries:
-            if stage_form.data:  # Ensure valid data exists
+            if stage_form.data and stage_form.stage_name.data:
                 # Check if this is an existing stage or a new one
                 stage_id = stage_form.data.get("id")
                 if stage_id:
