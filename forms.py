@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from flask_wtf.csrf import CSRFProtect
-from wtforms import StringField, SubmitField, DateField, SelectField, TextAreaField, RadioField, PasswordField, BooleanField
+from wtforms import StringField, SubmitField, DateField, SelectField, TextAreaField, PasswordField, BooleanField, FieldList, FormField, HiddenField
 from wtforms.validators import DataRequired, Optional, EqualTo, ValidationError
 from models import User, JobApplication, InterviewStage
 
@@ -31,6 +31,36 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
+
+class InterviewStageForm(FlaskForm):
+    id = HiddenField()
+    stage_name = SelectField(
+        'Stage Name',
+        choices=[
+            ('Initial Test', 'Initial Test'),
+            ('Initial Interview', 'Initial Interview'),
+            ('Technical Interview', 'Technical Interview'),
+            ('Work Sample', 'Work Sample'),
+            ('Personality Assessment', 'Personality Assessment'),
+            ('Salary Conversation', 'Salary Conversation'),
+            ('Leadership Team Interview', 'Leadership Team Interview'),
+            ('Reference Checks', 'Reference Checks')
+        ],
+        validators=[DataRequired()]
+    )
+    date = DateField('Date', validators=[Optional()])
+    status = SelectField(
+        'Status',
+        choices=[
+            ('Scheduled', 'Scheduled'),
+            ('Completed', 'Completed'),
+            ('Passed', 'Passed'),
+            ('Failed', 'Failed')
+        ],
+        validators=[DataRequired()]
+    )
+    notes = TextAreaField('Notes', validators=[Optional()])
+    submit = SubmitField('Add Interview Stage')
 
 class JobApplicationForm(FlaskForm):
     date_submitted = DateField('Date Application Submitted', validators=[Optional()])
@@ -68,33 +98,6 @@ class JobApplicationForm(FlaskForm):
     follow_up_message = TextAreaField('Follow-up Message (Optional)', validators=[Optional()])
 
     notes = TextAreaField('Notes', validators=[Optional()])
-    submit = SubmitField('Submit')
 
-class InterviewStageForm(FlaskForm):
-    stage_name = SelectField(
-        'Stage Name',
-        choices=[
-            ('Initial Test', 'Initial Test'),
-            ('Initial Interview', 'Initial Interview'),
-            ('Technical Interview', 'Technical Interview'),
-            ('Work Sample', 'Work Sample'),
-            ('Personality Assessment', 'Personality Assessment'),
-            ('Salary Conversation', 'Salary Conversation'),
-            ('Leadership Team Interview', 'Leadership Team Interview'),
-            ('Reference Checks', 'Reference Checks')
-        ],
-        validators=[DataRequired()]
-    )
-    date = DateField('Date', validators=[Optional()])
-    status = SelectField(
-        'Status',
-        choices=[
-            ('Scheduled', 'Scheduled'),
-            ('Completed', 'Completed'),
-            ('Passed', 'Passed'),
-            ('Failed', 'Failed')
-        ],
-        validators=[DataRequired()]
-    )
-    notes = TextAreaField('Notes', validators=[Optional()])
-    submit = SubmitField('Add Interview Stage')
+    interview_stages = FieldList(FormField(InterviewStageForm), min_entries=1)
+    submit = SubmitField('Submit')

@@ -221,6 +221,32 @@ def edit_application(application_id):
         application.follow_up_sent = form.follow_up_sent.data
         application.follow_up_message = form.follow_up_message.data
         application.notes = form.notes.data
+        
+        # Update interview stages
+        new_interview_stages = []
+        for stage_form in form.interview_stages.entries:
+            if stage_form.data:  # Ensure valid data exists
+                # Check if this is an existing stage or a new one
+                stage_id = stage_form.data.get("id")
+                if stage_id:
+                    # Update existing stage
+                    stage = InterviewStage.query.get(stage_id)
+                    if stage:
+                        stage.stage_name = stage_form.data["stage_name"]
+                        stage.stage_date = stage_form.data["stage_date"]
+                        stage.result = stage_form.data["result"]
+                        new_interview_stages.append(stage)
+                else:
+                    # Add a new stage
+                    new_stage = InterviewStage(
+                        stage_name=stage_form.data["stage_name"],
+                        stage_date=stage_form.data["stage_date"],
+                        result=stage_form.data["result"],
+                        job_application_id=application.id
+                    )
+                    new_interview_stages.append(new_stage)
+        
+        application.interview_stages = new_interview_stages        
 
         db.session.commit()
         flash('Job application updated successfully!', 'success')
