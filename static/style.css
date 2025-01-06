@@ -71,6 +71,31 @@
     background-color: #f8d7da;
 }
 
+.sortable a::after {
+    content: " ⇅";
+    font-size: 0.8em;
+    color: #999;
+}
+
+.sortable a.asc::after {
+    content: " ↑";
+}
+
+.sortable a.desc::after {
+    content: " ↓";
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
 /* Ensure all buttons in the Actions column have a consistent size */
 .table .btn {
     padding: 0.5rem 1rem; /* Increase padding for better touch targets */

@@ -1,5 +1,8 @@
 from flask_login import UserMixin
 from extensions import db
+from datetime import datetime, timedelta
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import case
 from werkzeug.security import generate_password_hash, check_password_hash
 
 class User(UserMixin, db.Model):
@@ -32,6 +35,24 @@ class JobApplication(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     user = db.relationship('User', backref=db.backref('job_applications', lazy=True))
+
+    @hybrid_property
+    def priority(self):
+        today = datetime.utcnow().date()
+        if self.due_date and self.due_date <= today + timedelta(days=2):
+            return 'high'
+        elif self.status == 'Offer Received':
+            return 'completed'
+        else:
+            return 'normal'
+        
+    @priority.expression
+    def priority(cls):
+        return case(
+            (cls.due_date <= datetime.utcnow().date() + timedelta(days=2), 'high'),
+            (cls.status == 'Offer Received', 'completed'),
+            else_='normal'
+        )   
 
     def __repr__(self):
         return f"<JobApplication {self.id} - {self.company}>"

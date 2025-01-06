@@ -4,8 +4,9 @@ from flask_bcrypt import Bcrypt
 from flask_wtf.csrf import CSRFProtect
 from flask_wtf import FlaskForm
 from wtforms import HiddenField
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import or_, and_, not_
 from flask_migrate import Migrate
 from dotenv import load_dotenv
 from whitenoise import WhiteNoise
@@ -139,45 +140,55 @@ class DeleteForm(FlaskForm):
 @login_required
 def dashboard():
     print(f"User authenticated: {current_user.is_authenticated}")
-    all_applications = JobApplication.query.filter_by(user_id=current_user.id).all()
+    applications = JobApplication.query.filter_by(user_id=current_user.id).all()
 
-    filtered_applications = []
-    for application in all_applications:
-        today = datetime.utcnow().date()
-        application.row_class = ""
+    # Apply filters
+    status_filter = request.args.get('status')
+    company_filter = request.args.get('company')
+    due_before_filter = request.args.get('due_before')
+    priority_filter = request.args.get('priority')
 
-        # Highlight when follow-up or due dates are today or overdue
-        if application.follow_up_date and application.follow_up_date <= today:
-            application.row_class = "table-warning"  # Bootstrap yellow
-        if application.due_date and application.due_date <= today:
-            application.row_class = "table-danger"  # Bootstrap red
-
-        # Filter applications based on query parameters
-        if request.args.get('status') and request.args.get('status') != application.status:
-            continue
-        if request.args.get('company') and request.args.get('company').lower() not in application.company.lower():
-            continue
-        if request.args.get('due_before') and application.due_date:
-            due_before = datetime.strptime(request.args.get('due_before'), "%d-%m-%Y")
-            if application.due_date > due_before:
-                continue
-            filtered_applications.append(application)
+    if status_filter:
+        applications = [app for app in applications if app.status == status_filter]
+    if company_filter:
+        applications = [app for app in applications if company_filter.lower() in app.company.lower()]
+    if due_before_filter:
+        try:
+            due_before = datetime.strptime(due_before_filter, "%Y-%m-%d").date()
+            applications = [app for app in applications if app.due_date and app.due_date <= due_before]
+        except ValueError:
+            flash("Invalid date format. Use YYYY-MM-DD.", "danger")
+    if priority_filter:
+        applications = [app for app in applications if app.priority == priority_filter]
     
-    # Add priority flag
-    for app in filtered_applications:
-        if app.due_date and app.due_date < datetime.utcnow() + timedelta(days=2):
-            app.priority = 'high'  # Nearly due
-        elif app.status == 'Offer Received':
-            app.priority = 'completed'
-        else:
-            app.priority = 'normal'
-    
+    # Apply sorting
+    sort_by = request.args.get('sort_by')
+    order = request.args.get('order', 'asc')
+
+    def sort_key(x, sort_by):
+        value = getattr(x, sort_by, None)
+        if isinstance(value, (date, datetime)):
+            return (True, value)
+        return (value is not None, value)  # This will sort None values last
+
+    if sort_by:
+        reverse = order == 'desc'                
+        applications = sorted(applications, key=lambda x: sort_key(x, sort_by), reverse=reverse)
+
+    # Filter high priority applications
+    high_priority_apps = [app for app in applications if app.priority == 'high']
+
+    # Sort by priority
+    sorted_apps = sorted(applications, key=lambda x: x.priority)
+
     application_form = JobApplicationForm()
     delete_form = DeleteForm()
 
     rendered_template = render_template(
         'dashboard.html', 
-        applications=filtered_applications or all_applications,
+        applications=applications, 
+        high_priority_apps=high_priority_apps,
+        sorted_apps=sorted_apps,
         application_form=application_form,
         delete_form=delete_form)
     

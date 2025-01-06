@@ -36,10 +36,10 @@
         <div class="col-md-3">
             <select name="status" class="form-control">
                 <option value="">All Statuses</option>
-                <option value="Applied">Applied</option>
-                <option value="Interview Scheduled">Interview Scheduled</option>
-                <option value="Offer Received">Offer Received</option>
-                <option value="Rejected">Rejected</option>
+                <option value="Applied" {% if request.args.get('status') == 'Applied' %}selected{% endif %}>Applied</option>
+                <option value="Interview Scheduled" {% if request.args.get('status') == 'Interview Scheduled' %}selected{% endif %}>Interview Scheduled</option>
+                <option value="Offer Received" {% if request.args.get('status') == 'Offer Received' %}selected{% endif %}>Offer Received</option>
+                <option value="Rejected" {% if request.args.get('status') == 'Rejected' %}selected{% endif %}>Rejected</option>
             </select>
         </div>
         <div class="col-md-3">
@@ -59,12 +59,68 @@
     <table class="table table-bordered mt-4">
         <thead>
             <tr>
-                <th>Date Submitted</th>
-                <th>Due Date</th>
+                <th class="sortable">
+                    <a href="{{ url_for('dashboard', sort_by='date_submitted', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" title="Click to sort by Date Submitted">
+                        Date Submitted
+                        <span class="sr-only">Sort by</span>
+                        {% if request.args.get('sort_by') == 'date_submitted' %}
+                            {% if request.args.get('order', 'asc') == 'asc' %}
+                                <i class="fa fa-sort"></i>
+                            {% else %}
+                                <i class="fa fa-sort-up"></i>
+                            {% endif %}
+                        {% else %}
+                            <i class="fa fa-sort-down"></i>
+                        {% endif %}
+                    </a>
+                </th>
+                <th class="sortable">
+                    <a href="{{ url_for('dashboard', sort_by='due_date', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" title="Click to sort by Date Submitted">
+                        Due Date
+                        <span class="sr-only">Sort by</span>
+                        {% if request.args.get('sort_by') == 'due_date' %}
+                            {% if request.args.get('order', 'asc') == 'asc' %}
+                                <i class="fa fa-sort"></i>
+                            {% else %}
+                                <i class="fa fa-sort-up"></i>
+                            {% endif %}
+                        {% else %}
+                            <i class="fa fa-sort-down"></i>
+                        {% endif %}
+                    </a>
+                </th>
                 <th>Follow-up Date</th>
-                <th>Company</th>
+                <th class="sortable">
+                    <a href="{{ url_for('dashboard', sort_by='company', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" title="Click to sort by Date Submitted">
+                        Company
+                        <span class="sr-only">Sort by</span>
+                        {% if request.args.get('sort_by') == 'company' %}
+                            {% if request.args.get('order', 'asc') == 'asc' %}
+                                <i class="fa fa-sort"></i>
+                            {% else %}
+                                <i class="fa fa-sort-up"></i>
+                            {% endif %}
+                        {% else %}
+                            <i class="fa fa-sort-down"></i>
+                        {% endif %}
+                    </a>
+                </th>
                 <th>Position Title</th>
-                <th>Status</th>
+                <th class="sortable">
+                    <a href="{{ url_for('dashboard', sort_by='status', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" title="Click to sort by Date Submitted">                    
+                        Status
+                        <span class="sr-only">Sort by</span>
+                        {% if request.args.get('sort_by') == 'status' %}
+                            {% if request.args.get('order', 'asc') == 'asc' %}
+                                <i class="fa fa-sort"></i>
+                            {% else %}
+                                <i class="fa fa-sort-up"></i>
+                            {% endif %}
+                        {% else %}
+                            <i class="fa fa-sort-down"></i>
+                        {% endif %}
+                    </a>
+                </th>
                 <th>Actions</th>
             </tr>
         </thead>
