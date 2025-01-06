@@ -1,14 +1,16 @@
 {% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}Enter Job Application Data{% endblock %}
 
 {% block content %}
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-8 col-lg-6">
+    <div class="row justify-content-center my-3">
+        <div class="col-lg-10">
             <div class="card">
                 <div class="card-body">
                     <h2 class="card-title">Enter Your Job Application Data</h2>
+                    {{ wtf.quick_form(form) }}
                     <form method="POST" action="{{ url_for('form') }}">
                         {{ form.hidden_tag() }}
 

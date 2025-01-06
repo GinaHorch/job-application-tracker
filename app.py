@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from flask_login import LoginManager, current_user, login_user, login_required, logout_user
+from flask_bootstrap import Bootstrap
 from flask_bcrypt import Bcrypt
 from flask_wtf.csrf import CSRFProtect
 from flask_wtf import FlaskForm
@@ -21,6 +22,7 @@ load_dotenv()
 app = Flask(__name__)
 bycrypt = Bcrypt(app)
 csrf = CSRFProtect(app)
+bootstrap = Bootstrap(app)
 
 app.wsgi_app = WhiteNoise(app.wsgi_app, root="static/")
 app.wsgi_app.add_files("static/", prefix="static/")
@@ -124,7 +126,7 @@ def form():
         db.session.commit()
         flash('Job application submitted successfully!', 'success')
         # Redirect to the dashboard
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('view_application', application_id=application.id))
     
     if form.errors:
         print("Form validation failed.")

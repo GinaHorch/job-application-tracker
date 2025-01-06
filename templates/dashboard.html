@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 
+{% import "bootstrap/wtf.html" as wtf %}
+
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
 
-<h2 class="mb-4">Job Applications Overview</h2>
+<h2 class="display-4 mb-4">Job Applications Overview</h2>
 
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
@@ -31,10 +33,11 @@
 {% endwith %}
 
 <!-- Filters -->
+<div class="container text-start">
 <form method="GET" action="{{ url_for('dashboard') }}">
-    <div class="form-row">
-        <div class="col-md-3">
-            <select name="status" class="form-control">
+    <div class="row g-2 align-items-start">
+        <div class="col-md-3 mb-2">
+            <select name="status" class="form-select">
                 <option value="">All Statuses</option>
                 <option value="Applied" {% if request.args.get('status') == 'Applied' %}selected{% endif %}>Applied</option>
                 <option value="Interview Scheduled" {% if request.args.get('status') == 'Interview Scheduled' %}selected{% endif %}>Interview Scheduled</option>
@@ -42,17 +45,18 @@
                 <option value="Rejected" {% if request.args.get('status') == 'Rejected' %}selected{% endif %}>Rejected</option>
             </select>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mb-2">
             <input type="text" name="company" placeholder="Filter by Company" class="form-control">
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 mb-2">
             <input type="date" name="due_before" class="form-control" placeholder="Due Before">
         </div>
-        <div class="col-md-3">
-            <button type="submit" class="btn btn-primary">Apply Filters</button>
+        <div class="col-md-3 mb-2">
+            <button type="submit" class="btn btn-primary btn-lg w-100">Apply Filters</button>
         </div>
     </div>
 </form>
+</div>
 
 <!-- Table -->
 <div class="table-responsive">
@@ -60,7 +64,8 @@
         <thead>
             <tr>
                 <th class="sortable">
-                    <a href="{{ url_for('dashboard', sort_by='date_submitted', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" title="Click to sort by Date Submitted">
+                    <a href="{{ url_for('dashboard', sort_by='date_submitted', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" 
+                        title="Click to sort by Date Submitted">
                         Date Submitted
                         <span class="sr-only">Sort by</span>
                         {% if request.args.get('sort_by') == 'date_submitted' %}
@@ -75,7 +80,8 @@
                     </a>
                 </th>
                 <th class="sortable">
-                    <a href="{{ url_for('dashboard', sort_by='due_date', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" title="Click to sort by Date Submitted">
+                    <a href="{{ url_for('dashboard', sort_by='due_date', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" 
+                        title="Click to sort by Due Date">
                         Due Date
                         <span class="sr-only">Sort by</span>
                         {% if request.args.get('sort_by') == 'due_date' %}
@@ -91,7 +97,8 @@
                 </th>
                 <th>Follow-up Date</th>
                 <th class="sortable">
-                    <a href="{{ url_for('dashboard', sort_by='company', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" title="Click to sort by Date Submitted">
+                    <a href="{{ url_for('dashboard', sort_by='company', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" 
+                        title="Click to sort by Company">
                         Company
                         <span class="sr-only">Sort by</span>
                         {% if request.args.get('sort_by') == 'company' %}
@@ -107,7 +114,8 @@
                 </th>
                 <th>Position Title</th>
                 <th class="sortable">
-                    <a href="{{ url_for('dashboard', sort_by='status', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" title="Click to sort by Date Submitted">                    
+                    <a href="{{ url_for('dashboard', sort_by='status', order=request.args.get('order', 'asc') == 'asc' and 'desc' or 'asc') }}" 
+                        title="Click to sort by Status">                    
                         Status
                         <span class="sr-only">Sort by</span>
                         {% if request.args.get('sort_by') == 'status' %}
