@@ -99,4 +99,6 @@ class JobApplicationForm(FlaskForm):
 
     notes = TextAreaField('Notes', validators=[Optional()])
 
+    interview_stages = FieldList(FormField(InterviewStageForm), min_entries=0)
+
     submit = SubmitField('Submit')
