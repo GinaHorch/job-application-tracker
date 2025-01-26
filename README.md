@@ -20,7 +20,7 @@ Whether you want to use the deployed version or customise the code for your own 
 - **Flask-WTF:** Form handling and validation.
 - **Flask-Login:** User authentication and session management.
 - **Flask-Migrate:** Database migrations.
-- 
+  
 ### Frontend
 - **HTML5 and CSS3:** Semantic markup and custom styling.
 - **Bootstrap:** Responsive and mobile-first design.
