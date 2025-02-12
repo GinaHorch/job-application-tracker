@@ -10,27 +10,50 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <header class="bg-info text-white text-center py-3 mb-4">
-        <h1>Job Application Tracker Dashboard</h1>
-        <nav>
-            <ul class="nav justify-content-center">
-                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">Home</a></li>
-                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('form') }}">Enter Job Application Data</a></li>
-                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('dashboard') }}">Dashboard</a></li>
+    <header class="bg-info text-white text-center py-3 mb-4">        
+        <nav class="navbar navbar-expand-lg navbar-dark">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="{{ url_for('dashboard') }}">Job Application Tracker</a>
+
+                <!-- Navbar toggler for mobiles -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Navbar links -->
+                <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('index') }}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'form' %}active{% endif %}" href="{{ url_for('form') }}">Add New Job Application</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">Dashboard</a>
+                        </li>
+                        {% if current_user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'logout' %}active{% endif %}" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'signup' %}active{% endif %}" href="{{ url_for('signup') }}">Sign Up</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {% if request.endpoint == 'login' %}active{% endif %}" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                    <!-- User Welcome Message -->
                 {% if current_user.is_authenticated %}
-                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('logout') }}">Logout</a></li>
-                {% else %}
-                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('signup') }}">Sign Up</a></li>
-                <li class="nav-item"><a class="nav-link text-white {% if request.endpoint == 'index' %}active{% endif %}" href="{{ url_for('login') }}">Login</a></li>
+                <div class="navbar-text text-white ms-auto">
+                    <i class="fas fa-user-circle"></i> Welcome, {{ current_user.username }}
+                </div>
                 {% endif %}
-                {% if current_user.is_authenticated %}
-                    <li class="nav-item ml-auto">
-                        <a class="nav-link text-white" href="#">
-                            <i class="fas fa-user-circle"></i> Welcome, {{ current_user.username }}
-                        </a>                       
-                    </li>
-                {% endif %}
-            </ul>
+            </div>                    
         </nav>
     </header>
     <main class="container">

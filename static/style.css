@@ -23,21 +23,34 @@
     background-color: #fff;
     font-size: 1.2rem;
 }
-.nav-item.ml-auto {
-    margin-left: auto;
-    padding-right: 10px;
+
+.navbar-nav .nav-item {
+    font-size: 1.1rem;
+    font-weight: bold;
+    padding: 0.5rem 1rem;
 }
 
-.nav-item a {
-    display: flex;
-    align-items: center;
-    font-size: 1.2rem;
+.navbar-nav .nav-link {
+    color: white !important;
+}
+
+.navbar-nav .nav-link:hover {
+    text-decoration: underline;
+}
+
+.navbar-text {
+    font-size: 1rem;
     font-weight: bold;
 }
 
-.nav-item i {
-    margin-right: 5px;
+.navbar-toggler {
+    border: none;
 }
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
 
 /* Dashboard Styling */
 .dashboard-table {

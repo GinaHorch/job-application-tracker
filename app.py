@@ -19,7 +19,7 @@ from extensions import db
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="static")
 bycrypt = Bcrypt(app)
 csrf = CSRFProtect(app)
 bootstrap = Bootstrap(app)
