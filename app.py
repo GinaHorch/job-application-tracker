@@ -344,5 +344,12 @@ def delete_interview_stage(stage_id):
     flash('Interview stage deleted successfully.', 'success')
     return redirect(url_for('view_application', application_id=stage.job_application_id))
 
+@app.route('/toggle_highlight/<int:id>', methods=['POST'])
+def toggle_highlight(id):
+    application = JobApplication.query.get_or_404(id)
+    application.highlight = not application.highlight
+    db.session.commit()
+    return redirect(url_for('dashboard'))
+
 if __name__ == '__main__':
     app.run(debug=True)
