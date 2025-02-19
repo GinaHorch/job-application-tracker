@@ -345,10 +345,13 @@ def delete_interview_stage(stage_id):
     return redirect(url_for('view_application', application_id=stage.job_application_id))
 
 @app.route('/toggle_highlight/<int:id>', methods=['POST'])
+@login_required
 def toggle_highlight(id):
-    application = JobApplication.query.get_or_404(id)
-    application.highlight = not application.highlight
-    db.session.commit()
+    form = DeleteForm()
+    if form.validate_on_submit():
+        application = JobApplication.query.get_or_404(id)
+        application.highlight = not application.highlight
+        db.session.commit()
     return redirect(url_for('dashboard'))
 
 if __name__ == '__main__':
