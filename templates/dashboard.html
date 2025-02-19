@@ -144,7 +144,7 @@
                 <td>{{ application.status }}</td>
                 <td>
                     <form method="POST" action="{{ url_for('toggle_highlight', id=application.id) }}" style="display: inline;">
-                        {{ form.csrf_token }}
+                        {{ delete_form.csrf_token }}
                         <button type="submit" class="btn btn-sm {% if application.highlight %}btn-warning{% else %}btn-outline-warning{% endif %}">
                             {% if application.highlight %}
                                 <i class="fas fa-star"></i>

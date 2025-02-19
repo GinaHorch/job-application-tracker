@@ -145,6 +145,9 @@ def dashboard():
     print(f"User authenticated: {current_user.is_authenticated}")
     applications = JobApplication.query.filter_by(user_id=current_user.id).all()
 
+    # Create form instance for CSRF token
+    form = DeleteForm()  # Make sure this form is imported at the top
+
     # Apply filters
     status_filter = request.args.get('status')
     company_filter = request.args.get('company')
@@ -193,7 +196,9 @@ def dashboard():
         high_priority_apps=high_priority_apps,
         sorted_apps=sorted_apps,
         application_form=application_form,
-        delete_form=delete_form)
+        delete_form=delete_form,
+        form=form  # Add this line to pass the form to template
+    )
     
     # Clear flash messages after rendering
     session.pop('_flashes', None)
