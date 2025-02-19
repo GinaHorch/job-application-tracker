@@ -97,7 +97,7 @@ def logout():
     flash('You have been logged out.', 'info')
     return redirect(url_for('index'))
 
-@app.route('/form', methods=['GET','POST'])
+@app.route('/form', methods=['GET', 'POST'])
 @login_required
 def form():
     print(f"User authenticated: {current_user.is_authenticated}")
@@ -106,7 +106,7 @@ def form():
         print("Form submitted successfully.")
         print("Data:", form.data)
 
-        application = JobApplication(
+        job_application = JobApplication(
             date_submitted=form.date_submitted.data,
             due_date=form.due_date.data,
             follow_up_date=form.follow_up_date.data,
@@ -119,14 +119,15 @@ def form():
             follow_up_sent=form.follow_up_sent.data,
             follow_up_message=form.follow_up_message.data,
             notes=form.notes.data,
-            user_id=current_user.id
+            user_id=current_user.id,
+            highlight=form.highlight.data
         )
         # Add the new data to the database
-        db.session.add(application)
+        db.session.add(job_application)
         db.session.commit()
         flash('Job application submitted successfully!', 'success')
         # Redirect to the dashboard
-        return redirect(url_for('view_application', application_id=application.id))
+        return redirect(url_for('view_application', application_id=job_application.id))
     
     if form.errors:
         print("Form validation failed.")

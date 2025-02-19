@@ -134,7 +134,7 @@
         </thead>
         <tbody>
             {% for application in applications %}
-            <tr class="{{ application.row_class }}">
+            <tr class="{{ application.row_class }} {% if application.highlight %}highlighted{% endif %}">
                 <td>{{ application.date_submitted.strftime('%d-%m-%Y') if application.date_submitted else 'N/A' }}</td>
                 <td>{{ application.due_date.strftime('%d-%m-%Y') if application.due_date else 'N/A' }}</td>
                 <td>{{ application.follow_up_date.strftime('%d-%m-%Y') if application.follow_up_date else 'N/A' }}</td>

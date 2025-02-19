@@ -147,3 +147,16 @@
         font-size: 0.8rem;
     }
 }
+
+.highlighted {
+    background-color: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding-left: 15px;
+    margin: 10px 0;
+    transition: all 0.3s ease;
+}
+
+.form-check {
+    padding-left: 1.5rem;
+    margin-top: 1rem;
+}

@@ -33,6 +33,7 @@ class JobApplication(db.Model):
     # interview_stages = db.relationship('InterviewStage', back_populates='job_application', cascade='all, delete-orphan')
     notes = db.Column(db.Text, nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    highlight = db.Column(db.Boolean, default=False)
 
     user = db.relationship('User', backref=db.backref('job_applications', lazy=True))
 
@@ -53,6 +54,19 @@ class JobApplication(db.Model):
             (cls.status == 'Offer Received', 'completed'),
             else_='normal'
         )   
+
+    @property
+    def should_highlight(self):
+        """Returns True if application should be highlighted"""
+        if self.highlight:  # Manually highlighted
+            return True
+            
+        if self.due_date:
+            # Highlight if due date is within next 2 days
+            days_until_due = (self.due_date - datetime.now()).days
+            return 0 <= days_until_due <= 2
+            
+        return False
 
     def __repr__(self):
         return f"<JobApplication {self.id} - {self.company}>"
